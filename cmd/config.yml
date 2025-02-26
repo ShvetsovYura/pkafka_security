@@ -1,0 +1,25 @@
+topic: topic-1
+consumer:
+  bootstrap.servers: kb1.loc
+  group.id: sec_group
+  security.protocol: SASL_SSL
+  ssl.ca.location: infra_task2/cert/k1/cert-signed
+  ssl.keystore.location: infra_task2/cert/k1/keystore/kafka.keystore.jks
+  ssl.keystore.password: rtqcnjht1
+  ssl.key.password: rtqcnjht1
+  sasl.mechanism: PLAIN
+  sasl.username: user
+  sasl.password: bitnami
+  enable.ssl.certificate.verification: false
+  auto.offset.reset: earliest
+producer:
+  bootstrap.servers: kb1.loc
+  security.protocol: SASL_SSL
+  ssl.ca.location: infra_task2/cert/k1/cert-signed
+  ssl.keystore.location: infra_task2/cert/k1/keystore/kafka.keystore.jks
+  ssl.keystore.password: rtqcnjht1
+  ssl.key.password: rtqcnjht1
+  sasl.mechanism: PLAIN
+  sasl.username: user
+  sasl.password: bitnami
+  enable.ssl.certificate.verification: false
