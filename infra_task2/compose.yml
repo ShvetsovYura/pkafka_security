@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  kafka1:
+    image: bitnami/kafka
+    container_name: kb1.loc
+    hostname: kb1.loc
+    environment:
+      KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
+      KAFKA_TLS_TYPE: JKS
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/kafka_server_jaas.conf"
+    volumes:
+      - ./kafka_server_jaas.conf:/opt/bitnami/kafka/config/kafka_server_jaas.conf
+      - ./props/k1-server.properties:/opt/bitnami/kafka/config/server.properties
+      - ./props/k1-admclient-cfg.conf:/tmp/ac.conf
+      - ./cert/k1/keystore/kafka.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./cert/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+      - ./run-init-kafka-topics.sh:/docker-entrypoint-initdb.d/run-init-kafka-topics.sh
+      - ./init-kafka-topics.sh:/init-kafka-topics.sh
+    networks:
+      kafka:
+        ipv4_address: 192.168.0.2
+  kafka2:
+    image: bitnami/kafka
+    container_name: kb2.loc
+    hostname: kb2.loc
+    environment:
+      KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
+      KAFKA_TLS_TYPE: JKS
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/kafka_server_jaas.conf"
+    volumes:
+      - ./kafka_server_jaas.conf:/opt/bitnami/kafka/config/kafka_server_jaas.conf
+      - ./props/k2-server.properties:/opt/bitnami/kafka/config/server.properties
+      - ./cert/k2/keystore/kafka.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./cert/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+    networks:
+      kafka:
+        ipv4_address: 192.168.0.3
+  kafka3:
+    image: bitnami/kafka
+    container_name: kb3.loc
+    hostname: kb3.loc
+    environment:
+      KAFKA_KRAFT_CLUSTER_ID: abcdefghijklmnopqrstuv
+      KAFKA_TLS_TYPE: JKS
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/kafka_server_jaas.conf"
+    volumes:
+      - ./kafka_server_jaas.conf:/opt/bitnami/kafka/config/kafka_server_jaas.conf
+      - ./props/k3-server.properties:/opt/bitnami/kafka/config/server.properties
+      - ./cert/k3/keystore/kafka.keystore.jks:/opt/bitnami/kafka/config/certs/kafka.keystore.jks:ro
+      - ./cert/truststore/kafka.truststore.jks:/opt/bitnami/kafka/config/certs/kafka.truststore.jks:ro
+    networks:
+      kafka:
+        ipv4_address: 192.168.0.4
+networks:
+  kafka:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.0.0/16
+          gateway: 192.168.0.1

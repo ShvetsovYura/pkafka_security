@@ -1,0 +1,21 @@
+1. Создайте новый топик balanced_topic с 8 партициями и фактором репликации 3.
+kafka-topics.sh --bootstrap-server localhost:9092 --create --topic balanced_topic   --partitions 8 --replication-factor 3
+2. Определите текущее распределение партиций.
+Создайте JSON-файл reassignment.json для перераспределения партиций.
+Перераспределите партиции.
+Проверьте статус перераспределения.
+Убедитесь, что конфигурация изменилась.
+Смоделируйте сбой брокера:
+a.  Остановите брокер kafka-1.
+b.  Проверьте состояние топиков после сбоя.
+c.  Запустите брокер заново.
+d.  Проверьте, восстановилась ли синхронизация реплик.
+
+
+
+
+kafka-reassign-partitions.sh --bootstrap-server localhost:9092 --broker-list "1,2,3" --topics-to-move-json-file "/tmp/reassignment.json" --generate
+kafka-reassign-partitions.sh --bootstrap-server localhost:9092 --reassignment-json-file /tmp/reassignment.json --execute
+
+сбой брокера
+docker stop kafka-2
